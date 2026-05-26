@@ -222,7 +222,8 @@ export default function Home() {
       {/* ================= HOW TO USE SECTION ================= */}
       <section id="how-to-use" className="info-section alt-bg">
         <div className="section-content layout-left">
-          <h2 className="section-title">How to generate AI Image?</h2>
+          {/* UPDATED FONT SIZE */}
+          <h2 className="section-title" style={{ fontSize: '32px', fontWeight: '800', marginBottom: '24px', color: '#1e293b' }}>How to generate AI Image?</h2>
           <div className="grid-2x2">
             <div className="bento-card">
               <h3>1. Enter Your Prompt</h3>
@@ -248,7 +249,8 @@ export default function Home() {
       <section id="features" className="info-section">
         <div className="section-content layout-left">
           <div className="section-header-row">
-            <h2 className="section-title">Key features of the Image Generator</h2>
+            {/* UPDATED FONT SIZE */}
+            <h2 className="section-title" style={{ fontSize: '32px', fontWeight: '800', marginBottom: '24px', color: '#1e293b' }}>Key features of the Image Generator</h2>
             <button className="btn-outline" onClick={scrollToTop}>Generate Image</button>
           </div>
           
@@ -290,7 +292,8 @@ export default function Home() {
       {/* ================= EXAMPLES SECTION ================= */}
       <section id="examples" className="info-section alt-bg">
         <div className="section-content layout-left">
-          <h2 className="section-title">Examples with prompts</h2>
+          {/* UPDATED FONT SIZE */}
+          <h2 className="section-title" style={{ fontSize: '32px', fontWeight: '800', marginBottom: '24px', color: '#1e293b' }}>Examples with prompts</h2>
           
           <div className="grid-3x2">
             <div className="example-bento-card">

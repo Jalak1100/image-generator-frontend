@@ -1,9 +1,8 @@
 import React, { useState } from 'react'
-import { Wand2, Zap } from 'lucide-react' // Added Zap icon for the credits
+import { Wand2, Zap, AlertCircle } from 'lucide-react'
 import './ImageGenerator.css'
 
-// ⚡ Accept credits and setCredits from Dashboard
-export default function ImageGenerator({ onImageGenerated, credits, setCredits }) {
+export default function ImageGenerator({ onImageGenerated, credits, setCredits, onGoToGallery }) {
   const [prompt, setPrompt] = useState('')
   const [style, setStyle] = useState('realistic')
   const [aspectRatio, setAspectRatio] = useState('1:1')
@@ -30,7 +29,7 @@ export default function ImageGenerator({ onImageGenerated, credits, setCredits }
     e.preventDefault();
     setError('');
 
-    // ⚡ 1. Frontend Credit Check
+    // Frontend Credit Check
     if (credits <= 0) {
       setError('You are out of credits! Your balance will reset 24 hours after your last refill.');
       return;
@@ -48,7 +47,7 @@ export default function ImageGenerator({ onImageGenerated, credits, setCredits }
         method: 'POST',
         headers: { 
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${localStorage.getItem('token')}` // Proves who is logged in!
+          'Authorization': `Bearer ${localStorage.getItem('token')}`
         },
         body: JSON.stringify({ prompt: `${prompt}, ${style} style` })
       });
@@ -59,12 +58,11 @@ export default function ImageGenerator({ onImageGenerated, credits, setCredits }
         throw new Error(data.error || 'Failed to generate image from server');
       }
 
-      // ⚡ 2. Update the master credit balance on the Dashboard
+      // Update the master credit balance on the Dashboard
       if (data.creditsRemaining !== undefined && setCredits) {
         setCredits(data.creditsRemaining);
       }
       
-      // 'data' already contains the perfect { url, prompt, style } from your backend
       setGeneratedImage(data);
       
       if (onImageGenerated) {
@@ -85,7 +83,7 @@ export default function ImageGenerator({ onImageGenerated, credits, setCredits }
         <h1>Create Your Masterpiece</h1>
         <p>Describe what you imagine, and let AI bring it to life</p>
         
-        {/* ⚡ CREDIT BADGE */}
+        {/* CREDIT BADGE */}
         <div style={{ 
           display: 'inline-flex', 
           alignItems: 'center', 
@@ -115,7 +113,7 @@ export default function ImageGenerator({ onImageGenerated, credits, setCredits }
                 placeholder="A serene mountain landscape with a crystal-clear lake at sunset..."
                 className="prompt-input"
                 rows="4"
-                disabled={isLoading || credits <= 0} // Disable if out of credits
+                disabled={isLoading || credits <= 0}
               />
               <p className="input-hint">Be descriptive for best results</p>
             </div>
@@ -154,12 +152,22 @@ export default function ImageGenerator({ onImageGenerated, credits, setCredits }
               </div>
             </div>
 
-            {error && <div className="error-message">{error}</div>}
+            {error && (
+              <div style={{ 
+                display: 'flex', alignItems: 'center', gap: '8px', 
+                background: '#fef2f2', color: '#dc2626', 
+                padding: '12px 16px', borderRadius: '8px', marginBottom: '16px',
+                border: '1px solid #f87171'
+              }}>
+                <AlertCircle size={20} />
+                <span style={{ fontSize: '14px', fontWeight: '500' }}>{error}</span>
+              </div>
+            )}
 
             <button
               type="submit"
               className="generate-button"
-              disabled={isLoading || credits <= 0} // ⚡ Disable if out of credits
+              disabled={isLoading || credits <= 0}
               style={{
                 opacity: (isLoading || credits <= 0) ? 0.7 : 1,
                 cursor: (isLoading || credits <= 0) ? 'not-allowed' : 'pointer'
@@ -177,12 +185,40 @@ export default function ImageGenerator({ onImageGenerated, credits, setCredits }
                 </>
               )}
             </button>
+
+            {/* GO TO GALLERY BUTTON (Only shows when credits hit 0) */}
+            {credits <= 0 && (
+              <button
+                type="button"
+                onClick={onGoToGallery}
+                style={{
+                  width: '100%',
+                  padding: '14px',
+                  background: 'transparent',
+                  color: '#4f46e5',
+                  border: '2px solid #4f46e5',
+                  borderRadius: '12px',
+                  fontSize: '15px',
+                  fontWeight: '600',
+                  cursor: 'pointer',
+                  display: 'flex',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  gap: '8px',
+                  transition: 'all 0.2s',
+                  marginTop: '12px' 
+                }}
+              >
+                View My Previous Masterpieces ➔
+              </button>
+            )}
           </form>
         </div>
 
-        <div className="generator-preview-section">
-          <div className="preview-box glass">
-            {generatedImage ? (
+        {/* THE FIX: We ONLY render the preview box if an image has been generated */}
+        {generatedImage && (
+          <div className="generator-preview-section">
+            <div className="preview-box glass">
               <div className="preview-image-container">
                 <img src={generatedImage.url} alt="Generated" className="preview-image" />
                 <div className="preview-info">
@@ -190,14 +226,10 @@ export default function ImageGenerator({ onImageGenerated, credits, setCredits }
                   <p className="preview-style">{generatedImage.style}</p>
                 </div>
               </div>
-            ) : (
-              <div className="preview-placeholder">
-                <div className="placeholder-icon">🎨</div>
-                <p>Your generated image will appear here</p>
-              </div>
-            )}
+            </div>
           </div>
-        </div>
+        )}
+        
       </div>
     </div>
   )
