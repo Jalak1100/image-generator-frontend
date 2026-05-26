@@ -3,7 +3,7 @@ import axios from 'axios'
 const API_BASE = '/api'
 
 const client = axios.create({
-  baseURL: API_BASE,
+  baseURL: 'https://image-generator-backend-kiu4.onrender.com',
   headers: {
     'Content-Type': 'application/json',
   },
