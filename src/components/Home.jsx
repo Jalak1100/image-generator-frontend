@@ -48,7 +48,7 @@ export default function Home() {
     setIsGenerating(true);
     
     try {
-      const response = await fetch('https://image-generator-backend-kiu4.onrender.com/api/images/generate', {
+      const response = await fetch('https://image-generator-backend-kiu4.onrender.com/images/generate', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
