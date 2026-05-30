@@ -62,7 +62,7 @@ export default function Dashboard() {
   // 2. THE FORCEFUL DOWNLOAD FUNCTION (Using the robust POST proxy method)
   const handleDownload = async (imageUrl, promptText) => {
     try {
-      const response = await fetch('https://image-generator-backend-kiu4.onrender.com/images/generate', {
+      const response = await fetch('https://image-generator-backend-r0bc.onrender.com/images/generate', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

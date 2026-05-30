@@ -19,7 +19,7 @@ export default function Login({ onSwitchToRegister }) {
     e.preventDefault();
     try {
       // Call your backend login API
-      const response = await fetch('https://image-generator-backend-kiu4.onrender.com/auth/register', {
+      const response = await fetch('https://image-generator-backend-r0bc.onrender.com/auth/register', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password })
